@@ -6,10 +6,56 @@ sentences in the input data....
 import sys
 from separatr import separate_a_b_sents as sep
 
-def scrambler(chunked_sents, l1, l2):
-	for sent in chunked_sents:
+def head(chunk):
+	for each in chunk:
+		feats = process_piped(each)
+		if feats['chunkType'] == 'head':
+			return each[0]
+	return -1
+
+def ids(chunk):
+	ids = []
+	for each in chunk:
+		ids.append(each[0])
+	return ids
+
+def move_chunk(sent, chunk_l1, chunk_l2, reln):
+	sen_len = len(sent)
+	ids1 = ids(sent[chunk_l1])
+	ids2 = ids(sent[chunk_l2])
+	dep_1 = dep_2 = -1
+	for k in xrange(sen_len):
+		chunk = sent[k]
+		for j in xrange(len(chunk)):
+			word = chunk[j]
+			if word[7] == reln and word[6] in ids1:
+				dep_1 = k
+			elif word[7] == reln and word[6] in ids2:
+				dep_2 = k
+	if dep_1 != -1:
+		chunk = sent[dep_1]
+		sent[dep_1] = []
+		sent.insert(chunk_l1, chunk)
+		sent.remove([])
+		if dep_1 > chunk_l1:
+			chunk_l1 += 1
+		dep_1 = -1
+	if dep_2 != -1:
+		chunk = sent[dep_2]
+		sent[dep_2] = []
+		sent.insert(chunk_l2, chunk)
+		sent.remove([])
+		if dep_2 > chunk_l2:
+			chunk_l2 += 1
+		dep_2 = -1
+	return (sent, chunk_l1, chunk_l2)
+
+def scrambler(chunked_sents, sents_roots, l1, l2):
+	for i in xrange(len(chunked_sents)):
+		sent = chunked_sents[i]
 		#IDENTIFY ROOT ID
-		root_id = ''
+		root_id = sents_roots[i]
+		'''
 		for chunk in sent:
 			for word in chunk:
 				if word[7] == 'root':
@@ -17,7 +63,7 @@ def scrambler(chunked_sents, l1, l2):
 					break
 			if root_id:
 				break
-	
+		'''
 		#FIND l1 & l2 CHUNKS
 		chunk_l1 = -1
 		chunk_l2 = -1
@@ -29,31 +75,36 @@ def scrambler(chunked_sents, l1, l2):
 					chunk_l1 = k
 				if word[7] == l2 and word[6] == root_id:
 					chunk_l2 = k
-		
-		#INTERCHANGE CHUNKS
-		temp = sent[chunk_l1]
-		sent[chunk_l1] = sent[chunk_l2]
-		sent[chunk_l2] = temp
 
-		#RENUMBER
-		count = 1
-		renumber = {'0': '0'}
-		for k in xrange(len(sent)):
-			chunk = sent[k]
-			for j in xrange(len(chunk)):
-				word = chunk[j]
-				if int(word[0]) != count:
-					renumber[word[0]] = str(count)
-				else:
-					renumber[word[0]] = word[0]
-				word[0] = str(count)
-				count += 1
-		
-		for k in xrange(len(sent)):
-			chunk = sent[k]
-			for j in xrange(len(chunk)):
-				word = chunk[j]
-				word[6] = renumber[word[6]]
+		if chunk_l1 != -1 and chunk_l2 != -1:
+			#INTERCHANGE CHUNKS
+			temp = sent[chunk_l1]
+			sent[chunk_l1] = sent[chunk_l2]
+			sent[chunk_l2] = temp
+
+			#MOVE R6 DEPENDENTS
+			sent, chunk_l1, chunk_l2 = move_chunk(sent, chunk_l1, chunk_l2, 'r6')
+			sent, chunk_l1, chunk_l2 = move_chunk(sent, chunk_l1, chunk_l2, 'nmod')
+
+			#RENUMBER
+			count = 1
+			renumber = {'0': '0'}
+			for k in xrange(len(sent)):
+				chunk = sent[k]
+				for j in xrange(len(chunk)):
+					word = chunk[j]
+					if int(word[0]) != count:
+						renumber[word[0]] = str(count)
+					else:
+						renumber[word[0]] = word[0]
+					word[0] = str(count)
+					count += 1
+			
+			for k in xrange(len(sent)):
+				chunk = sent[k]
+				for j in xrange(len(chunk)):
+					word = chunk[j]
+					word[6] = renumber[word[6]]
 	return chunked_sents
 
 def print_data(sents):
@@ -97,8 +148,8 @@ def chunker(sents):
 if __name__ == "__main__":
 	l1 = sys.argv[2]
 	l2 = sys.argv[3]
-	sents = sep(sys.argv[1], l1, l2)
+	sents, sents_roots = sep(sys.argv[1], l1, l2)
 	chunked_sents = chunker(sents)
-#print_data(chunked_sents)
-	scrambled_sents = scrambler(chunked_sents, l1, l2)
+	#print_data(chunked_sents)
+	scrambled_sents = scrambler(chunked_sents, sents_roots, l1, l2)
 	print_data(scrambled_sents)
