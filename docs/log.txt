@@ -1,0 +1,7 @@
+26 Sept 2015
+
+Added random scrambling to the scramblr script. 
+Takes chunks of a sentences and generates permutations of those chunks instead of just k1 and k2 exchange that was happening earlier.
+
+==
+
