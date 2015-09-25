@@ -4,7 +4,8 @@ sentences in the input data....
 """
 
 import sys
-from separatr import separate_a_b_sents as sep
+import separatr as sep
+import itertools
 
 def head(chunk):
 	for each in chunk:
@@ -50,11 +51,26 @@ def move_chunk(sent, chunk_l1, chunk_l2, reln):
 		dep_2 = -1
 	return (sent, chunk_l1, chunk_l2)
 
-def scrambler(chunked_sents, sents_roots, l1, l2):
+def gen_plaintext_sents(sents):
+	plain_sents = []
+	for sent in sents:
+		new_sent = []
+		for chunk in sent:
+			for line in chunk:
+				new_sent.append(line[1])
+		plain_sents.append("".join(new_sent))
+	return plain_sents
+
+def scrambler(chunked_sents):
+	new_chunked_sents = []
 	for i in xrange(len(chunked_sents)):
-		sent = chunked_sents[i]
+		sent = chunked_sents[i][:-1]
+		new_sents = list(itertools.permutations(sent))
+		for x in xrange(len(new_sents)):
+			new_sents[x] = list(new_sents[x])
+			new_sents[x].append(chunked_sents[i][-1])
+		new_chunked_sents.extend(new_sents)
 		#IDENTIFY ROOT ID
-		root_id = sents_roots[i]
 		'''
 		for chunk in sent:
 			for word in chunk:
@@ -63,6 +79,7 @@ def scrambler(chunked_sents, sents_roots, l1, l2):
 					break
 			if root_id:
 				break
+		'''
 		'''
 		#FIND l1 & l2 CHUNKS
 		chunk_l1 = -1
@@ -105,7 +122,8 @@ def scrambler(chunked_sents, sents_roots, l1, l2):
 				for j in xrange(len(chunk)):
 					word = chunk[j]
 					word[6] = renumber[word[6]]
-	return chunked_sents
+		'''
+	return new_chunked_sents
 
 def print_data(sents):
 	for sent in sents:
@@ -146,10 +164,12 @@ def chunker(sents):
 	return sents
 
 if __name__ == "__main__":
-	l1 = sys.argv[2]
-	l2 = sys.argv[3]
-	sents, sents_roots = sep(sys.argv[1], l1, l2)
+	sep.init(sys.argv[1])
+	sents = sep.sents_parts
 	chunked_sents = chunker(sents)
-	#print_data(chunked_sents)
-	scrambled_sents = scrambler(chunked_sents, sents_roots, l1, l2)
-	print_data(scrambled_sents)
+#print_data(chunked_sents)
+	scrambled_sents = scrambler(chunked_sents)
+#print_data(scrambled_sents)
+	plain_sents = gen_plaintext_sents(scrambled_sents)
+	for each in plain_sents:
+		print each

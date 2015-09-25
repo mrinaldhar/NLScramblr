@@ -40,16 +40,16 @@ def separate_a_b_sents(fp, a, b):
 	sent_a_b = []
 	sent_roots = []
 	init(fp)
-	if a=='k1' and b=='k2':
-		rem = []
-		for i in xrange(len(sents_parts)):
-			for j in xrange(len(sents_parts[i])):
-				part = sents_parts[i][j]
-				if(part[1] == 'कि'):
-					rem.append(sents_parts[i])
-					break
-		for each in rem:
-			sents_parts.remove(each)
+#if a=='k1' and b=='k2':
+	rem = []
+	for i in xrange(len(sents_parts)):
+		for j in xrange(len(sents_parts[i])):
+			part = sents_parts[i][j]
+			if(part[1] == 'कि'):
+				rem.append(sents_parts[i])
+				break
+	for each in rem:
+		sents_parts.remove(each)
 
 	for i in xrange(len(sents_parts)):
 		temp = []
