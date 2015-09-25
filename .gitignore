@@ -1,3 +1,4 @@
 *.pyc
-old
-old/*
+data/old
+data/old/*
+.DS_Store
