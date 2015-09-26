@@ -5,3 +5,7 @@ Takes chunks of a sentences and generates permutations of those chunks instead o
 
 ==
 
+27 Sept 2015
+
+Tree-branch based scrambling idea introduced. Generated trees for sentences, then scrambled by moving level-1 branches instead of chunks.
+
