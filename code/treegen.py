@@ -14,8 +14,8 @@ class Node(object):
 		self.parentID = 0
 		self.parentREL = 0
 
-	def __lt__(self, other):
-		return self.ID < other.ID
+#	def __lt__(self, other):
+#		return self.ID < other.ID
 
 	def addNewDep(self, depNode):
 		self.deps.append(depNode)
@@ -46,11 +46,11 @@ def makeTree(sent):
 	for x in xrange(len(sent)):
 		line = sent[x]
 		node = Node()
-		node.ID = line[0]
-		node.parentID = line[6]
+		node.ID = int(line[0])
+		node.parentID = int(line[6])
 		node.value = line
 		node.parentREL = line[7]
-		if node.parentID == '0':
+		if node.parentID == 0:
 			rootNode = node.ID
 		if nodes.has_key(node.parentID):
 			nodes[node.parentID].addNewDep(node)
