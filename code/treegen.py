@@ -79,9 +79,11 @@ def init(filename):
 	for sent in sents:
 		tree = makeTree(sent)
 		trees.append(tree)
-		print_data([sent])
-		print_tree(tree, 0)
-		print "="*100
+	return trees
 
 if __name__=="__main__":
-	init(sys.argv[1])
+	trees = init(sys.argv[1])
+	for each in trees:
+		print_tree(each, 0)
+		print "="*100
+
