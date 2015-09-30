@@ -1,11 +1,21 @@
 26 Sept 2015
 
 Added random scrambling to the scramblr script. 
-Takes chunks of a sentences and generates permutations of those chunks instead of just k1 and k2 exchange that was happening earlier.
+Takes chunks of a sentences and generates permutations of those chunks instead of just k1 and k2 exchange that was happening earlier. 
+Too many permutations to consider.
 
 ==
 
 27 Sept 2015
 
-Tree-branch based scrambling idea introduced. Generated trees for sentences, then scrambled by moving level-1 branches instead of chunks.
+Tree-branch based scrambling idea introduced. Generated trees for sentences, then scrambled by moving level-1 branches (only verb arguments) instead of chunks.
+Several scrambles seem to be correct.
+But relative position of the verb arguments (w.r.t the verb) doesn't change.
+
+==
+
+30 Sept 2015
+
+Level-1 scrambling script was changed to shuffle the position of the verb as well.
+This was done to study the affect of changing distance and sign of verb arguments w.r.t. verb on the validity of the sentence.
 
