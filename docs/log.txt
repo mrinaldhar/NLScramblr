@@ -11,6 +11,7 @@ Too many permutations to consider.
 Tree-branch based scrambling idea introduced. Generated trees for sentences, then scrambled by moving level-1 branches (only verb arguments) instead of chunks.
 Several scrambles seem to be correct.
 But relative position of the verb arguments (w.r.t the verb) doesn't change.
+parser accuracy = 24.8% error
 
 ==
 
@@ -18,4 +19,4 @@ But relative position of the verb arguments (w.r.t the verb) doesn't change.
 
 Level-1 scrambling script was changed to shuffle the position of the verb as well.
 This was done to study the affect of changing distance and sign of verb arguments w.r.t. verb on the validity of the sentence.
-
+parser accuracy = 37.5% error
