@@ -4,6 +4,16 @@ from scramblr import chunker, print_data, process_piped
 import separatr as sep
 import itertools
 
+import json
+
+def pretty_print(sent):
+	for chunk in sent:
+		for each in chunk:
+			print each[1],
+	print
+
+index = 0
+
 def print_sent(new_sent):
 	sep.sents = [new_sent]
 	sep.i = -1
@@ -46,10 +56,23 @@ def print_sent(new_sent):
 		for j in xrange(len(chunk)):
 			word = chunk[j]
 			word[6] = renumber[word[6]]
-	print_data([sent])
+	global index
+	pretty_print(sent)
+	resp = raw_input('[0, 1, 2] : ')
+	while resp not in ['0', '1', '2']:
+		pretty_print(sent)
+		resp = raw_input('[0, 1, 2] : ')
+	responses[new_sent] = resp
+	index += 1
+	if (index % 2 == 0):
+		f.seek(0)
+		f.write(json.dumps(responses))
+	#print_data([sent])
 
 trees = init('../data/one_sample/one_sample.conll')
+f = open('response.txt', 'w')
 responses = {}
+
 for tree in trees:
 	tree_sort(tree)
 	orig_sent = sent_gen(tree, '')
@@ -68,3 +91,6 @@ for tree in trees:
 		#new_sents= [sent_gen(tree, '')]
 		for new_sent in new_sents:
 			print_sent(new_sent)
+
+f.write(json.dumps(responses))
+f.close()
