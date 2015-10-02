@@ -20,3 +20,9 @@ parser accuracy = 24.8% error
 Level-1 scrambling script was changed to shuffle the position of the verb as well.
 This was done to study the affect of changing distance and sign of verb arguments w.r.t. verb on the validity of the sentence.
 parser accuracy = 37.5% error
+
+==
+
+2 Oct 2015
+
+Did a rewrite of the accuracy script. Now supports file/directory specification, and allows saving all datastructures to report file.
