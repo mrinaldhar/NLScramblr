@@ -19,9 +19,14 @@ class Sentence(object):
 		self.cmpList = []
 		for line in data.split('\n'):
 			tags = line.split('\t')
-			self.cmpList.append(tags[1:2]+tags[-4:])
+			self.cmpList.append(tags[0:2]+tags[-4:])
+			try:
+				if tags[-3] == 'root' or tags[-3] == 'main':
+					self.root = tags[0]
+			except: 
+				pass
 		if self.cmpList == [['']]:
-			self.cmpList = [['_', '_', '_', '_', '_']]
+			self.cmpList = [['_', '_', '_', '_', '_', '_']]
 
 def measure():
 	num_error = 0
@@ -48,22 +53,26 @@ def measure():
 			sents_TEST.append(sent_TEST)	
 			cmp_GOLD = sent_GOLD.cmpList
 			cmp_TEST = sent_TEST.cmpList
-			errors[sent_GOLD.value] = {"dep":[], "multiple":[]}
+			# errors[sent_GOLD.value] = {"dep":[], "multiple":[]}
+			errors[sent_GOLD.value] = {}
 			sentence_tags = {}
 			num_totalChecks += len(cmp_GOLD)
 
 			for j in xrange(len(cmp_GOLD)):
 				flag = True
-				for k in xrange(5):
+				for k in xrange(1, 6):
 					cmp_TEST[j][k] = cmp_TEST[j][k].strip('%')
 					if k==2 and cmp_GOLD[j][k] == 'main':
 						cmp_GOLD[j][k] = 'root'
 					if flag and cmp_GOLD[j][k] != cmp_TEST[j][k]:
 						num_error += 1
-						errors[sent_GOLD.value]["dep"].append((cmp_GOLD[j][k], cmp_TEST[j][k]))
+						dist_TEST = int(sent_TEST.root) - int(cmp_TEST[j][0])
+						dist_GOLD = int(sent_GOLD.root) - int(cmp_GOLD[j][0])
+						errors[sent_GOLD.value]['\t'.join(cmp_TEST[j])] = [dist_TEST, dist_GOLD]
+						# errors[sent_GOLD.value]["dep"].append((cmp_GOLD[j][k], cmp_TEST[j][k]))
 				if sentence_tags.has_key((cmp_TEST[j][1], cmp_TEST[j][2])):
 					num_wrong += 1
-					errors[sent_GOLD.value]["multiple"].append((cmp_TEST[j][1], cmp_TEST[j][2]))
+					# errors[sent_GOLD.value]["multiple"].append((cmp_TEST[j][1], cmp_TEST[j][2]))
 					# print cmp_TEST[j][0], sentence_tags[(cmp_TEST[j][1], cmp_TEST[j][2])], cmp_TEST[j][2]
 				else:
 					sentence_tags[(cmp_TEST[j][1], cmp_TEST[j][2])] = cmp_TEST[j][0]
@@ -81,9 +90,11 @@ def measure():
 	return errors
 
 if __name__=="__main__":
-	if len(sys.argv) != 5:
-		print "USAGE: python accuracy.py [-f | -d; file or directory] [GOLD data file or dir] [TEST data file or dir] [OUTPUT report file]"
+	if len(sys.argv) != 6:
+		print "USAGE: python accuracy.py [-f | -d; file or directory] [GOLD data file or dir] [TEST data file or dir] [OUTPUT report file] [INPUT sentence file]"
 		exit(0)
+	inp = open(sys.argv[5], 'r')
+	orig_sent = Sentence(inp.read())
 	run_mode = sys.argv[1]
 	reportFile = open(sys.argv[4], 'w')
 	dir_GOLD = sys.argv[2]
