@@ -6,6 +6,7 @@ sentences in the input data....
 import sys
 import separatr as sep
 import itertools
+import thread
 
 def head(chunk):
 	for each in chunk:
