@@ -18,10 +18,16 @@ def renumber_chunks(sent):			# Takes one chunked sentence
 
 def print_data(sent):
 	for chunk in sent:
-			for line in chunk:
-				print '\t'.join(line)
+		for line in chunk:
+			print '\t'.join(line)
 		print
 
+def dump_data(sent):
+	ans = ''
+	for chunk in sent:
+		for line in chunk:
+			ans += '\t'.join(line)
+		ans == '\n'
 
 def chunker(sent):			# Requires raw sent.
 	sent_parts = sent_breakdown(sent)

@@ -1,19 +1,9 @@
 from survey.models import Survey, Question, Answer
-from utils
+import utils
 import json
 
-def parse_survey(survey):
-	return json.dumps({
-		'id': survey.id,
-		'name' : survey.name,
-		'desc' : survey.description,
-	})
-
 def survey_list():
-	surveys = []
-	for each in Survey.objects.all():
-		surveys.append(parse_survey(each))
-	return surveys
+	return Survey.objects.all()
 
 def parse_question(question):
 	question = utils.chunker(question)

@@ -16,13 +16,13 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.conf.urls import patterns, include, url
-from survey.views import *
+import survey.views as sviews
 
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^$', home),
+    url(r'^$', sviews.home),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^accounts/login', login.as_view(), name='login'),
-    url(r'^accounts/signup/$', signup.as_view(), name='signup')
+    url(r'^accounts/login', sviews.login.as_view(), name='login'),
+    url(r'^accounts/signup/$', sviews.signup.as_view(), name='signup')
 )
