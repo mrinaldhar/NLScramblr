@@ -25,17 +25,10 @@
         </a>
     {% endif %}
 </ol>
-<!-- 
-    <ol class="surveyList">
-    {% for survey in surveys %}
-        <li>{{ survey.name }}</a></li>
-    {% endfor %}
-    </ol>
- -->
 <div id="footer">
 Developed by Mrinal Dhar &amp; Chanakya Malireddy
 </div>
-<!-- <a href="{ url 'auth:logout' }?next={ url 'login' }"> --><button class="anim logout">Logout</button><!-- </a> -->
+<a href="/accounts/logout"><button class="anim logout">Logout</button></a>
 </body>
 <script src="{% static 'js/jquery.js' %}"></script>
 <script src="{% static 'js/jqueryui.js' %}"></script>

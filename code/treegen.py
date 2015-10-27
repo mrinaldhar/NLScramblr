@@ -3,7 +3,7 @@ Generates a dependency tree
 given a sentence in conll
 '''
 
-import separatr as sep
+import utils
 import sys
 
 class Node(object):
