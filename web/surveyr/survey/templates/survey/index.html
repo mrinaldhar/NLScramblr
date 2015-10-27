@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+<title>
+</title>
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/smooth.css' %}" />
+<link rel="stylesheet" href="{% static 'css/common.css' %}" />
+</head>
+<body>
+ <div id="container">
+ 	<h3>Click and drag the chunks such that the final sentence still makes sense</h3><br /><br />
+<ul id="sortable">
+	<li>A</li>
+	<li>B</li>
+	<li>C</li>
+	<li>D</li>
+	<li>E</li>
+	<li>F</li>
+</ul><br /><br />
+ <button onclick="submitthis()" id="submit">Submit!</button>
+</div>
+<div id="footer">
+Developed by Mrinal Dhar &amp; Chanakya Malireddy
+</div>
+</body>
+</html>
+</body>
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/jqueryui.js' %}"></script>
+<script src="{% static 'js/index.js' %}"></script>
+</html>
