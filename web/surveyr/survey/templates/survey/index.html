@@ -11,14 +11,14 @@
 <ul class="surveyList">
 	{% if surveys %}
 	{% for survey in surveys %}
-        <a href="home.html?id={{ survey.id }}">
+        <a href="home.html?id={{ survey.id }}" class="anim">
         	<li><span class="sName">{{ survey.name }}</span>
         		<span class="sDesc">{{ survey.description }}</span>
         	</li>
        	</a>
     {% endfor %}
     {% else %}
-        <a href="#">
+        <a href="#" class="anim">
     		<li><span class="sName">Nothing here, yet!</span>
         		<span class="sDesc">Don't worry, this means we are working on new surveys that will be added soon.</span>
         	</li>
@@ -35,6 +35,7 @@
 <div id="footer">
 Developed by Mrinal Dhar &amp; Chanakya Malireddy
 </div>
+<!-- <a href="{ url 'auth:logout' }?next={ url 'login' }"> --><button class="anim logout">Logout</button><!-- </a> -->
 </body>
 <script src="{% static 'js/jquery.js' %}"></script>
 <script src="{% static 'js/jqueryui.js' %}"></script>
