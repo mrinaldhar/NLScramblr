@@ -49,12 +49,10 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'cas.middleware.CASMiddleware',
 )
 
 AUTHENTICATION_BACKENDS = (
 	'django.contrib.auth.backends.ModelBackend',
-	'cas.backends.CASBackend',
 )
 
 ROOT_URLCONF = 'surveyr.urls'
@@ -108,11 +106,3 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-CAS_SERVER_URL = "https://login.iiit.ac.in/cas/"
-CAS_LOGOUT_COMPLETELY = True
-#CAS_PROVIDE_URL_TO_LOGOUT = True
-#CAS_FORCE_SSL_SERVICE_URL = True
-
-CAS_RESPONSE_CALLBACKS = (
-	'survey.cas_handle.create',
-)
