@@ -1,0 +1,11 @@
+<html>
+<body>
+{% if surveys %}
+    <ol>
+    {% for survey in surveys %}
+        <li>{{ survey.name }}</a></li>
+    {% endfor %}
+    </ol>
+{% endif %}
+</body>
+</html>

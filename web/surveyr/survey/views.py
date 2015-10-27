@@ -4,13 +4,13 @@ from django.template import RequestContext
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect, ensure_csrf_cookie
 import json
-from survey.api import *
+# from survey.api import *
 
 from django.http import HttpResponse
 
 def home(request):
 	data = {
-			'surveys' : survey_list(),
+			#'surveys' : survey_list(),
 			'user': request.user,
 			'request': request
 			}
