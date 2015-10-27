@@ -18,17 +18,9 @@ def renumber_chunks(sent):			# Takes one chunked sentence
 
 def print_data(sent):
 	for chunk in sent:
-		for line in chunk:
-			print '\t'.join(line)
+			for line in chunk:
+				print '\t'.join(line)
 		print
-
-def dump_data(sent):
-	s = ''
-	for chunk in sent:
-		for line in chunk:
-			s += '\t'.join(line)
-		s += '\n'
-	return s
 
 
 def chunker(sent):			# Requires raw sent.
@@ -38,7 +30,6 @@ def chunker(sent):			# Requires raw sent.
 	chunk = []
 	old_ch_id = False
 	for line in sent:
-		print line
 		piped_data = process_piped(line)	
 		ch_id = piped_data['chunkId']
 		if (old_ch_id == False):
@@ -73,6 +64,5 @@ def readfile(filename):
 def sent_breakdown(sent):
 	parts = []
 	for every in sent.split('\n'):
-		if every:
-			parts.append(every.split('\t'))
+		parts.append(every.split('\t'))
 	return parts
