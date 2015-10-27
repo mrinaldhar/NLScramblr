@@ -1,20 +1,28 @@
-from django.shortcuts import render_to_response
+from django.http import HttpResponse
+from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.views.generic import View
 from django.template import RequestContext
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect, ensure_csrf_cookie
-import json
-# from survey.api import *
 
-from django.http import HttpResponse
+import django.contrib.auth as auth
+
+import json
+from survey.api import *
+from survey.models import *
+
 
 def home(request):
 	data = {
-			#'surveys' : survey_list(),
+			'surveys' : survey_list(),
 			'user': request.user,
 			'request': request
 			}
 	return render_to_response('survey/index.html', context_instance=RequestContext(request, data))
+
+def logout(request):
+	auth.logout(request)
+	return redirect('home')
 
 class login(View):
 	template_name = 'survey/login.html'
@@ -70,12 +78,32 @@ class signup(View):
 			return redirect('home')
 		return redirect('/accounts/login#signup')
 
-
-class surveys(View):
-	'''
-		AJAX endpoint to get questions
-		and post answers
-	'''
-
+class question(View):
+	@method_decorator(ensure_csrf_cookie)	
 	def get(self, request, *args, **kwargs):
-		pass	
+		response = {'status' : 0}
+		survey_id = request.GET.get('survey', '')
+		if survey_id:
+			survey = get_object_or_404(Survey, pk = survey_id)
+			response['data'] = next_question(request.user, survey)
+		else:
+			response['status'] = 1
+			response['message'] = 'Missing parameter : survey id'
+		return HttpResponse(json.dumps(response), content_type="application/json")
+
+class answer(View):
+	@method_decorator(ensure_csrf_cookie)
+	def post(self, request, *args, **kwargs):
+		response = {'status' : 0}
+		question_id = request.POST.get('question', '')
+		answer = request.POST.get('answer', '')
+		if question_id and answer:
+			question = get_object_or_404(Question, pk = question_id)
+			if save_answer(request.user, question, answer):
+				response['data'] = 'Success'
+			else:
+				response['data'] = 'Failure'
+		else:
+			response['status'] = 1
+			response['message'] = 'Missing parameters : question and/or answer'
+		return HttpResponse(json.dumps(response), content_type="application/json")

@@ -1,6 +1,8 @@
 from survey.models import Survey, Question, Answer
 import utils
 import json
+import compare
+
 
 def survey_list():
 	return Survey.objects.all()
@@ -23,7 +25,8 @@ def next_question(user, survey):
 		 	return parse_question(question)
 
 def save_answer(user, question, answer):
-	question = Question.objects.get(id=question)
+	if not compare(utils.sent_breakdown(question.question), utils.sent_breakdown(answer)):
+		return False
 	chunk_dict = json.loads(answer)
 	utils.renumber_chunks(chunk_dict)
 	answer = utils.dump_data(chunk_dict)
@@ -31,3 +34,4 @@ def save_answer(user, question, answer):
 			answer = answer,
 			user = user)
 	Answer.save()
+	return True
