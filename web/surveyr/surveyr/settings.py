@@ -49,6 +49,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'survey.middleware.LoginRequiredMiddleware',
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -108,3 +109,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'staticfiles'),
 )
+
+LOGIN_EXEMPT_URLS = (
+  r'^accounts/signup',
+) 
