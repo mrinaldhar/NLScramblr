@@ -1,11 +1,41 @@
+<!doctype html>
 <html>
+<head>
+	<title>Integrated Survey Platform</title>
+	{% load static %}
+	<link rel="stylesheet" href="{% static 'css/smooth.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/common.css' %}" />
+</head>
 <body>
-{% if surveys %}
-    <ol>
+<div class="header">Integrated Survey Platform</div>
+<ul class="surveyList">
+	{% if surveys %}
+	{% for survey in surveys %}
+        <a href="home.html?id={{ survey.id }}">
+        	<li><span class="sName">{{ survey.name }}</span>
+        		<span class="sDesc">{{ survey.description }}</span>
+        	</li>
+       	</a>
+    {% endfor %}
+    {% else %}
+        <a href="#">
+    		<li><span class="sName">Nothing here, yet!</span>
+        		<span class="sDesc">Don't worry, this means we are working on new surveys that will be added soon.</span>
+        	</li>
+        </a>
+    {% endif %}
+</ol>
+<!-- 
+    <ol class="surveyList">
     {% for survey in surveys %}
         <li>{{ survey.name }}</a></li>
     {% endfor %}
     </ol>
-{% endif %}
+ -->
+<div id="footer">
+Developed by Mrinal Dhar &amp; Chanakya Malireddy
+</div>
 </body>
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/jqueryui.js' %}"></script>
 </html>

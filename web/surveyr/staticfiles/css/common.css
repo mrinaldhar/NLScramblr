@@ -41,13 +41,16 @@ body {
 		box-shadow: 0 0 3px black;
 	}
 	#footer {
-		position: absolute;
+		position: fixed;
 		bottom: 0px;
 		width: 100%;
 		border-top: 2px solid white;
 		color: white;
 		padding: 10px;
 		text-align: center;
+		left: 0px;
+		background-color: rgba(10,82,158,1);
+		
 		font-size: 0.9em;
 	}
 	#submit {
@@ -66,4 +69,46 @@ body {
 	}
 	h3 {
 		color: white;
+	}
+	.header {
+		position: fixed;
+		top: 0px;
+		width: 100%;
+		left: 0px;
+		padding: 20px;
+		font-size: 1.5em;
+		text-align: center;
+		background-color: rgba(10,82,158,1);
+		opacity: 1;
+		color: white;
+	}
+	.surveyList a {
+		color: white;
+		text-decoration: none;
+		
+	}
+	.surveyList {
+		margin-top: 150px;
+		width: 100%;
+		list-style-type: none;
+	}
+	.surveyList li {
+		padding: 10px;
+		padding-top: 15px;
+		padding-bottom: 15px;
+		border: 1px dashed white;
+		border-radius: 5px;
+		margin: 10px;
+	}
+	.surveyList li:hover {
+		background-color: rgba(0,0,0,0.8);
+	}
+	.sName {
+		display: block;
+		font-size: 1.1em;
+	}
+	.sDesc {
+		display: block;
+		font-size: 0.8em;
+		margin-top: 10px;
 	}
