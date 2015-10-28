@@ -5,6 +5,8 @@
 	{% load static %}
 	<link rel="stylesheet" href="{% static 'css/smooth.css' %}" />
 	<link rel="stylesheet" href="{% static 'css/common.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/login.css' %}" />
+
 </head>
 <body>
 <div class="header">Integrated Survey Platform</div>
@@ -24,6 +26,11 @@
 </tr>
 <tr>
 	<td width="100%" colspan="2" id="tabcontents">
+		
+	</td>
+</tr>
+<tr>
+	<td width="100%" colspan="2" id="error">
 		
 	</td>
 </tr>
@@ -62,7 +69,7 @@ $('.tab').click(function() {
 
 	var selected = this.id;
 	$('#tabcontents').fadeOut(200, function() {
-
+	$('#error').text('');
 		if(selected == "login") {
 		$('#tabcontents').html("<form method='post' onsubmit='submitForm(1); return false;'>\
 			<input type='text' name='username' id='username' placeholder='Username' /><br />\
@@ -111,6 +118,9 @@ function submitForm(which) {
 		// console.log(data);
 	parseThis(result, 2);
 }
+else {
+	$('#error').text("The passwords do not match! Please check.");
+}
 	}
 	// console.log(result);
 	return false;
@@ -127,8 +137,12 @@ function parseThis(response, type) {
 		}
 		window.location.href=loc;
 	}
+	else if (response["status"] == 0 && type == 2) {
+		alert("Your account has been created successfully. Please log in.");
+		$('#login').click();
+	} 
 	else if (response["status"] == 1) {
-		notify(response["message"]);
+		$('#error').text(response["message"]);
 	}
 }
 

@@ -19,7 +19,7 @@ class Answer(models.Model):
 	question = models.ForeignKey(Question)
 	answer = models.TextField(default = '') #For subjective questions
 	score = models.IntegerField(default = 0) #For scoring questions
-	user = models.OneToOneField(User)
+	user = models.ForeignKey(User)
 
 	def __unicode__(self):
 		return self.question.id + ' : ' + self.answer.id

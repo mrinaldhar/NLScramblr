@@ -3,5 +3,4 @@ data/old
 data/old/*
 .DS_Store
 web/venv/*
-web/*/*/migrations
 web/surveyr/venv/*

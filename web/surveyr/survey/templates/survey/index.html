@@ -9,6 +9,8 @@
 <body>
 <div class="header">Integrated Survey Platform</div>
 <ul class="surveyList">
+<h3>Select a survey to begin<br />&nbsp;</h3>
+
 	{% if surveys %}
 	{% for survey in surveys %}
         <a href="/home?id={{ survey.id }}" class="anim">
@@ -24,7 +26,7 @@
         	</li>
         </a>
     {% endif %}
-</ol>
+</ul>
 <div id="footer">
 Developed by Mrinal Dhar &amp; Chanakya Malireddy
 </div>

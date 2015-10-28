@@ -23,11 +23,11 @@ def print_data(sent):
 		print
 
 def dump_data(sent):
-	ans = ''
+	ans = []
 	for chunk in sent:
 		for line in chunk:
-			ans += '\t'.join(line)
-		ans == '\n'
+			ans.append('\t'.join(line))
+	return '\n'.join(ans)
 
 def chunker(sent):			# Requires raw sent.
 	sent_parts = sent_breakdown(sent)

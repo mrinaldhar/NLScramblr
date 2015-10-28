@@ -7,6 +7,7 @@ def makeTree(sent):
 	lines = {'0':'0'}
 	rels = {}
 	for line in sent:
+		#print line
 		lines[line[0]] = line[1]
 	for line in sent:
 		parent = line[6]

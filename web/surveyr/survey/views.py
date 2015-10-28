@@ -98,7 +98,6 @@ class question(View):
 		if survey_id:
 			survey = get_object_or_404(Survey, pk = survey_id)
 			response['data'] = next_question(request.user, survey)
-			print "hi"
 		else:
 			response['status'] = 1
 			response['message'] = 'Missing parameter : survey id'

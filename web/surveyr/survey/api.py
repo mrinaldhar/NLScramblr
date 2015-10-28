@@ -26,13 +26,13 @@ def next_question(user, survey):
 	return ''
 
 def save_answer(user, question, answer):
-	if not compare(utils.sent_breakdown(question.question), utils.sent_breakdown(answer)):
-		return False
 	chunk_dict = json.loads(answer)
 	utils.renumber_chunks(chunk_dict)
 	answer = utils.dump_data(chunk_dict)
+	if not compare.compare(utils.sent_breakdown(question.question), utils.sent_breakdown(answer)):
+		return False
 	final = Answer(question = question,
 			answer = answer,
 			user = user)
-	Answer.save()
+	final.save()
 	return True
