@@ -30,4 +30,31 @@ Developed by Mrinal Dhar &amp; Chanakya Malireddy
 <script src="{% static 'js/jquery.js' %}"></script>
 <script src="{% static 'js/jqueryui.js' %}"></script>
 <script src="{% static 'js/index.js' %}"></script>
+<script>
+ var inputdata;
+   function dataload() {
+	inputdata = ajaxCall('/question', {survey: 1}, 'GET', false);
+	console.log(inputdata);
+    inputdata["chunks"].each(function(i) {
+    	$('#sortable').append("<li>"+inputdata["chunks"][i]+"</li>");
+    });
+   }
+  $(document).ready(function() {
+    $( "#sortable" ).sortable();
+    $( "#sortable" ).disableSelection();
+    dataload();
+  });
+  function submitthis() {
+  	var result = [];
+  	var elements = $('#sortable').children('li');
+  	elements.each(function(i) { 
+    	result.push(elements[i].innerHTML);
+	});
+  	console.log(result);
+  	data = {"result":result, "original":inputdata["id"]};
+  	ajaxCall('/process', data, 'POST', false);
+  	alert("Thank you! Your response has been saved. Keep going!");
+  	dataload();
+  }
+</script>
 </html>

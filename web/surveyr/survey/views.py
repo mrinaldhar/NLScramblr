@@ -4,15 +4,17 @@ from django.views.generic import View
 from django.template import RequestContext
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect, ensure_csrf_cookie
+from django.db import transaction
 
 import django.contrib.auth as auth
 
 import json
 from survey.api import *
 from survey.models import *
+from django.contrib.auth.models import User
 
 
-def home(request):
+def index(request):
 	data = {
 			'surveys' : survey_list(),
 			'user': request.user,
@@ -20,20 +22,28 @@ def home(request):
 			}
 	return render_to_response('survey/index.html', context_instance=RequestContext(request, data))
 
+def home(request):
+	data = {
+			'user': request.user,
+			'request': request
+			}
+
+	return render_to_response('survey/home.html', context_instance=RequestContext(request, data))
+
 def logout(request):
 	auth.logout(request)
-	return redirect('home')
+	return redirect('index')
 
 class login(View):
 	template_name = 'survey/login.html'
 
-	@method_decorator(csrf_protect)
 	def post(self, request, *args, **kwargs):
 		response = {'status' : 0}
 		login_data = request.POST
+		print login_data
 		user = None
 		try:
-			uname = login_data['uname']
+			uname = login_data['username']
 			password = login_data['password']
 		except:
 			response['status'] = 1
@@ -46,27 +56,30 @@ class login(View):
 			response['status'] = 1
 			response['message'] = 'The credentials you entered were invalid.'
 		return HttpResponse(json.dumps(response), content_type="application/json")
-	
-	@method_decorator(ensure_csrf_cookie)	
+		
 	def get(self, request, *args, **kwargs):
+		print "i am here"
 		if request.user.is_authenticated():
-			return redirect('home')
+			return redirect('index')
 		return render_to_response(self.template_name, context_instance=RequestContext(request))
 
 class signup(View):
-	@method_decorator(csrf_protect)
 	def post(self, request, *args, **kwargs):
 		response = {'status' : 0}
 		user_data = request.POST
+		print user_data
 		try:
 			with transaction.atomic():
+				print "1"
 				username = user_data['username']
 				password = user_data['password']
 				user = User(
 					username = username
 					)
 				user.set_password(password)
+				print "2"
 				user.save()
+				print "3"
 		except Exception as e:
 			transaction.rollback()
 			response['status'] = 1
@@ -75,24 +88,23 @@ class signup(View):
 
 	def get(self, request, *args, **kwargs):
 		if request.user.is_authenticated():
-			return redirect('home')
+			return redirect('index')
 		return redirect('/accounts/login#signup')
 
-class question(View):
-	@method_decorator(ensure_csrf_cookie)	
+class question(View):	
 	def get(self, request, *args, **kwargs):
 		response = {'status' : 0}
 		survey_id = request.GET.get('survey', '')
 		if survey_id:
 			survey = get_object_or_404(Survey, pk = survey_id)
 			response['data'] = next_question(request.user, survey)
+			print "hi"
 		else:
 			response['status'] = 1
 			response['message'] = 'Missing parameter : survey id'
 		return HttpResponse(json.dumps(response), content_type="application/json")
 
 class answer(View):
-	@method_decorator(ensure_csrf_cookie)
 	def post(self, request, *args, **kwargs):
 		response = {'status' : 0}
 		question_id = request.POST.get('question', '')

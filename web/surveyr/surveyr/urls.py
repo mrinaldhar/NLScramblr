@@ -21,10 +21,11 @@ import survey.views as sviews
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^$', sviews.home),
+    url(r'^$', sviews.index, name='index'),
+    url(r'^home/$', sviews.home, name='home'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/login', sviews.login.as_view(), name='login'),
-    url(r'^accounts/signup/$', sviews.signup.as_view(), name='signup'),
+    url(r'^accounts/signup', sviews.signup.as_view(), name='signup'),
     url(r'^accounts/logout', sviews.logout, name='logout'),
     url(r'^question/', sviews.question.as_view(), name='question'),
     url(r'^answer/$', sviews.answer.as_view(), name='answer'),

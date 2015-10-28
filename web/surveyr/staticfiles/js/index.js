@@ -1,26 +1,4 @@
-    var inputdata;
-   function dataload() {
-	inputdata = ajaxCall('/getnew', {}, 'GET', false);
-    inputdata["chunks"].each(function(i) {
-    	$('#sortable').append("<li>"+inputdata["chunks"][i]+"</li>");
-    });
-   }
-  $(document).ready(function() {
-    $( "#sortable" ).sortable();
-    $( "#sortable" ).disableSelection();
-  });
-  function submitthis() {
-  	var result = [];
-  	var elements = $('#sortable').children('li');
-  	elements.each(function(i) { 
-    	result.push(elements[i].innerHTML);
-	});
-  	console.log(result);
-  	data = {"result":result, "original":inputdata["id"]};
-  	ajaxCall('/process', data, 'POST', false);
-  	alert("Thank you! Your response has been saved. Keep going!");
-  	dataload();
-  }
+   
 
 
 $.ajaxSetup({ 
@@ -60,4 +38,15 @@ type: ajaxmethod,
   }
 });
 return res;
+}
+
+function convUnicode(text) {
+  return decodeURIComponent(escape(text));
+}
+function getUrlVars() {
+var vars = {};
+var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+vars[key] = value;
+});
+return vars;
 }

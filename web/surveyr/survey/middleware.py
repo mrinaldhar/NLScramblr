@@ -11,6 +11,7 @@ class LoginRequiredMiddleware:
         assert hasattr(request, 'user') 
         if not request.user.is_authenticated():
             path = request.path_info.lstrip('/')
+            print path
             if not any(m.match(path) for m in EXEMPT_URLS):
 		redirect_path = settings.LOGIN_URL + "?ref=" + request.path
                 return HttpResponseRedirect(redirect_path)

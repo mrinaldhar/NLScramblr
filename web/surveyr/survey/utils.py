@@ -31,11 +31,14 @@ def dump_data(sent):
 
 def chunker(sent):			# Requires raw sent.
 	sent_parts = sent_breakdown(sent)
+	print sent_parts
 	sent = sent_parts
 	sent_chunks = []
 	chunk = []
 	old_ch_id = False
 	for line in sent:
+		if len(line) < 5:
+			break
 		piped_data = process_piped(line)	
 		ch_id = piped_data['chunkId']
 		if (old_ch_id == False):

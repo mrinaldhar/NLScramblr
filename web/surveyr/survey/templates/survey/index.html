@@ -11,7 +11,7 @@
 <ul class="surveyList">
 	{% if surveys %}
 	{% for survey in surveys %}
-        <a href="home.html?id={{ survey.id }}" class="anim">
+        <a href="/home?id={{ survey.id }}" class="anim">
         	<li><span class="sName">{{ survey.name }}</span>
         		<span class="sDesc">{{ survey.description }}</span>
         	</li>

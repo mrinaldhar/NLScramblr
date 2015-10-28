@@ -8,8 +8,8 @@ def survey_list():
 	return Survey.objects.all()
 
 def parse_question(question):
-	question = utils.chunker(question)
-	chunk_dict = {}
+	chunk_dict = {'id' : question.id}
+	question = utils.chunker(question.question)
 	for i in xrange(len(question)):
 		chunk_dict[i] = question[i]
 	return json.dumps(chunk_dict)
@@ -23,6 +23,7 @@ def next_question(user, survey):
 				break
 		if flag:
 		 	return parse_question(question)
+	return ''
 
 def save_answer(user, question, answer):
 	if not compare(utils.sent_breakdown(question.question), utils.sent_breakdown(answer)):
