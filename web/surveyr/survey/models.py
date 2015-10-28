@@ -22,4 +22,4 @@ class Answer(models.Model):
 	user = models.ForeignKey(User)
 
 	def __unicode__(self):
-		return self.question.id + ' : ' + self.answer.id
+		return str(self.question.id) + ' : ' + self.answer
