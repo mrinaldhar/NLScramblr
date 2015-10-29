@@ -31,7 +31,6 @@ def dump_data(sent):
 
 def chunker(sent):			# Requires raw sent.
 	sent_parts = sent_breakdown(sent)
-	print sent_parts
 	sent = sent_parts
 	sent_chunks = []
 	chunk = []

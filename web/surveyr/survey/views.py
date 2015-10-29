@@ -40,7 +40,6 @@ class login(View):
 	def post(self, request, *args, **kwargs):
 		response = {'status' : 0}
 		login_data = request.POST
-		print login_data
 		user = None
 		try:
 			uname = login_data['username']
@@ -58,7 +57,6 @@ class login(View):
 		return HttpResponse(json.dumps(response), content_type="application/json")
 		
 	def get(self, request, *args, **kwargs):
-		print "i am here"
 		if request.user.is_authenticated():
 			return redirect('index')
 		return render_to_response(self.template_name, context_instance=RequestContext(request))
@@ -67,19 +65,15 @@ class signup(View):
 	def post(self, request, *args, **kwargs):
 		response = {'status' : 0}
 		user_data = request.POST
-		print user_data
 		try:
 			with transaction.atomic():
-				print "1"
 				username = user_data['username']
 				password = user_data['password']
 				user = User(
 					username = username
 					)
 				user.set_password(password)
-				print "2"
 				user.save()
-				print "3"
 		except Exception as e:
 			transaction.rollback()
 			response['status'] = 1
