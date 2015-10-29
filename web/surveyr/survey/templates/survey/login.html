@@ -1,0 +1,150 @@
+<!doctype html>
+<html>
+<head>
+	<title>Login: Integrated Survey Platform</title>
+	{% load static %}
+	<link rel="stylesheet" href="{% static 'css/smooth.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/common.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/login.css' %}" />
+
+</head>
+<body>
+<div class="header">Integrated Survey Platform</div>
+
+
+
+
+<div id="container">
+	<table id="formtable">
+<tr> 
+	<td id="signup" class="tab anim" width="50%">
+		Sign Up
+	</td>
+	<td id="login" class="tab anim selected" width="50%">
+		Log in
+	</td>
+</tr>
+<tr>
+	<td width="100%" colspan="2" id="tabcontents">
+		
+	</td>
+</tr>
+<tr>
+	<td width="100%" colspan="2" id="error">
+		
+	</td>
+</tr>
+</table>
+</div>
+
+
+
+
+
+
+<div id="footer">
+Developed by Mrinal Dhar &amp; Chanakya Malireddy
+</div>
+
+</body>
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/jqueryui.js' %}"></script>
+<script src="{% static 'js/index.js' %}"></script>
+
+<script>
+$(document).ready(function() {
+
+
+  if (window.location.hash == '#signup') {
+    $('#signup').click();
+  }
+  else {
+$('#login').click();
+
+  }
+});
+$('.tab').click(function() {
+	$('.tab').removeClass('selected');
+	$(this).addClass('selected');
+
+	var selected = this.id;
+	$('#tabcontents').fadeOut(200, function() {
+	$('#error').text('');
+		if(selected == "login") {
+		$('#tabcontents').html("<form method='post' onsubmit='submitForm(1); return false;'>\
+			<input type='text' name='username' id='username' placeholder='Username' /><br />\
+			<input type='password' name='password' id='password' placeholder='Password' /><br /><br />\
+			<input type='submit' class='anim' value='Log in' />\
+		</form>");
+	}
+	else if (selected == "signup") {
+$('#tabcontents').html("<form method='post' onsubmit='submitForm(2); return false;'>\
+		<input type='text' id='username' placeholder='Username' /><br />\
+			<input type='password' id='password' placeholder='Password' /><br />\
+			<input type='password' id='confirmpassword' placeholder='Confirm password' /><br /><br />\
+			<input type='submit' class='anim' value='Create new account' />\
+		</form>");
+
+	}
+
+		$('form').submit(function(event) {
+	event.preventDefault();
+	console.log('form submitted;');
+});
+	});
+	
+	$('#tabcontents').fadeIn(200);
+});
+
+function submitForm(which) {
+	var data = {};
+	var result;
+	if (which == 1) {
+		data = {
+			username: $('#username').val(),
+			password: $('#password').val()
+		}
+		result = ajaxCall("/accounts/login/", data, 'POST', false);
+	parseThis(result, 1);
+
+	}
+	else if (which == 2) {
+		if ($('#password').val() == $('#confirmpassword').val()) {
+		data = {
+			password: $('#password').val(),
+			username: $('#username').val()
+		}
+		result = ajaxCall("/accounts/signup", data, 'POST', false);
+		// console.log(data);
+	parseThis(result, 2);
+}
+else {
+	$('#error').text("The passwords do not match! Please check.");
+}
+	}
+	// console.log(result);
+	return false;
+}
+
+function parseThis(response, type) {
+	if (response["status"] == 0 && type == 1) {
+		var loc;
+		if (getUrlVars()["ref"]) {
+			loc = getUrlVars()["ref"];
+		}
+		else {
+			loc = '/';
+		}
+		window.location.href=loc;
+	}
+	else if (response["status"] == 0 && type == 2) {
+		alert("Your account has been created successfully. Please log in.");
+		$('#login').click();
+	} 
+	else if (response["status"] == 1) {
+		$('#error').text(response["message"]);
+	}
+}
+
+</script>
+</html>

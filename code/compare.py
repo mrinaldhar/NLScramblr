@@ -1,5 +1,4 @@
 import separatr as sep
-import scramblr as scrm
 import sys
 import treegen as tree
 def makeTree(sent):

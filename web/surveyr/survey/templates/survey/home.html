@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+<title>
+</title>
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/smooth.css' %}" />
+<link rel="stylesheet" href="{% static 'css/common.css' %}" />
+</head>
+<body>
+<div class="header">Integrated Survey Platform</div>
+
+ <div id="container">
+ 	<h3>Click and drag the chunks such that the final sentence still makes sense</h3><br /><br />
+<ul id="sortable">
+	<li>A</li>
+	<li>B</li>
+	<li>C</li>
+	<li>D</li>
+	<li>E</li>
+	<li>F</li>
+</ul><br /><br />
+ <button onclick="submitthis()" id="submit" class="btn">Submit this solution!</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ <button onclick="dataload()" id="next" class="btn">Next sentence</button>
+
+</div>
+<div id="footer">
+Developed by Mrinal Dhar &amp; Chanakya Malireddy
+</div>
+<a href="/accounts/logout"><button class="anim logout">Logout</button></a>
+</body>
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/jqueryui.js' %}"></script>
+<script src="{% static 'js/index.js' %}"></script>
+<script>
+ var inputdata;
+ var outputdata;
+   function dataload() {
+   	$('#sortable').html('');
+   	var surveyID = getUrlVars()["id"];
+	response = ajaxCall('/question', {survey: surveyID}, 'GET', false);
+	// console.log(response);
+	inputdata = JSON.parse(response["data"]);
+	console.log(inputdata);
+    $.each(inputdata, function(i) {
+    	if (i!='id') {
+    	var chunk = "";
+    	$.each(inputdata[i], function(word_index) {
+    		chunk += inputdata[i][word_index][1] + "&nbsp; ";
+    	});
+    	$('#sortable').append("<li id='"+i+"'>"+chunk+"</li>");
+    }
+    });
+   }
+  $(document).ready(function() {
+    $( "#sortable" ).sortable();
+    $( "#sortable" ).disableSelection();
+    dataload();
+  });
+  function submitthis() {
+  	var tempresult = {};
+  	var elements = $('#sortable').children('li');
+  	elements.each(function(i) { 
+  		tempresult[i] = inputdata[elements[i].id];
+	});
+	var result = []
+	$.each(tempresult, function(index, val) {
+		result.push(val);
+	});
+  	console.log(result);
+  	data = {"question":inputdata["id"], "answer":JSON.stringify(result)};
+  	ajaxCall('/answer/', data, 'POST', false);
+  	alert("Thank you! Your response has been saved. Keep going!");
+
+  }
+</script>
+</html>
