@@ -29,7 +29,9 @@ def save_answer(user, question, answer):
 	chunk_dict = json.loads(answer)
 	utils.renumber_chunks(chunk_dict)
 	answer = utils.dump_data(chunk_dict)
-	if not compare.compare(utils.sent_breakdown(question.question), utils.sent_breakdown(answer)):
+#	if not compare.compare(utils.sent_breakdown(question.question), utils.sent_breakdown(answer)):
+#		return False
+	if answer == question.question:
 		return False
 	final = Answer(question = question,
 			answer = answer,
