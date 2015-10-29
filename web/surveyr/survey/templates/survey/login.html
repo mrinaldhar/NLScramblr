@@ -45,7 +45,13 @@
 <div id="footer">
 Developed by Mrinal Dhar &amp; Chanakya Malireddy
 </div>
+<div id="notif_bar" class="anim">
 
+<span id="heading">Chanakya commented on your status</span>
+<span id="content"></span>
+<span id="reply"><input type="text" class="input_text" placeholder="Reply" /></span>
+
+</div>
 </body>
 <script src="{% static 'js/jquery.js' %}"></script>
 <script src="{% static 'js/jqueryui.js' %}"></script>
@@ -138,13 +144,28 @@ function parseThis(response, type) {
 		window.location.href=loc;
 	}
 	else if (response["status"] == 0 && type == 2) {
-		alert("Your account has been created successfully. Please log in.");
+		notify("Success!", "Your account has been created successfully. Please log in.");
 		$('#login').click();
 	} 
 	else if (response["status"] == 1) {
+		notify("Failure!", "Something went wrong!");
 		$('#error').text(response["message"]);
 	}
 }
-
+function triggerNotif() {
+  $('#notif_bar').animate({left: "-2px"}, 100);
+}
+function dismissNotif() {
+  $('#notif_bar').animate({left: "-30%"}, 100);
+}
+function notify(head_string, text) {
+  dismissNotif();
+  window.setTimeout(function() {}, 500);
+  $('#notif_bar #heading').html(head_string);
+  $('#notif_bar #reply').html('');
+  $('#notif_bar #content').html(convUnicode(text));
+  triggerNotif();
+  window.setTimeout(dismissNotif, 3000);
+}
 </script>
 </html>
