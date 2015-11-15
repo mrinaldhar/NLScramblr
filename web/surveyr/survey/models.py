@@ -12,6 +12,9 @@ class Question(models.Model):
 	survey = models.ForeignKey(Survey)
 	question = models.TextField()
 
+	class Meta:
+		unique_together = (("survey", "question"),)
+	
 	def __unicode__(self):
 		return self.question
 
@@ -20,6 +23,9 @@ class Answer(models.Model):
 	answer = models.TextField(default = '') #For subjective questions
 	score = models.IntegerField(default = 0) #For scoring questions
 	user = models.ForeignKey(User)
+
+	class Meta:
+		unique_together = (("answer", "user"),)
 
 	def __unicode__(self):
 		return str(self.question.id) + ' : ' + self.answer

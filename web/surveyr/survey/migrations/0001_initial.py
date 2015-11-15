@@ -48,6 +48,14 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='answer',
             name='user',
-            field=models.OneToOneField(to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(to=settings.AUTH_USER_MODEL),
+        ),
+        migrations.AlterUniqueTogether(
+            name='question',
+            unique_together=set([('survey', 'question')]),
+        ),
+        migrations.AlterUniqueTogether(
+            name='answer',
+            unique_together=set([('answer', 'user')]),
         ),
     ]

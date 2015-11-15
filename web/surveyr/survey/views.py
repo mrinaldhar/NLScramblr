@@ -68,6 +68,8 @@ class signup(View):
 		try:
 			with transaction.atomic():
 				username = user_data['username']
+				if ' ' in username or username == '':
+					raise Exception('Invalid username!') 
 				password = user_data['password']
 				user = User(
 					username = username
@@ -107,8 +109,28 @@ class answer(View):
 			if save_answer(request.user, question, answer):
 				response['data'] = 'Success'
 			else:
+				response['status'] = 1
 				response['data'] = 'Failure'
 		else:
 			response['status'] = 1
 			response['message'] = 'Missing parameters : question and/or answer'
+		return HttpResponse(json.dumps(response), content_type="application/json")
+
+class progress(View):
+	def get(self, request, *args, **kwargs):
+		response   = {'status' : 0}	
+		survey_id = request.GET.get('survey', '')
+		if survey_id:
+			survey = get_object_or_404(Survey, pk = survey_id)
+			progress = 0
+			total = len(survey.question_set.all())
+			for question in survey.question_set.all():
+				for answer in question.answer_set.all():
+					if answer.user == request.user:
+						progress += 1
+						break
+			response['data'] = {'total' : total, 'completed' : progress}
+		else:
+			response['status'] = 1
+			response['message'] = 'Missing parameter : survey id'
 		return HttpResponse(json.dumps(response), content_type="application/json")

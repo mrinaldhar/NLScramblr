@@ -33,8 +33,11 @@ def save_answer(user, question, answer):
 #		return False
 	if answer == question.question:
 		return False
-	final = Answer(question = question,
-			answer = answer,
-			user = user)
-	final.save()
+	try:
+		final = Answer(question = question,
+				answer = answer,
+				user = user)
+		final.save()
+	except:
+		return False
 	return True

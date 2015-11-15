@@ -29,4 +29,5 @@ urlpatterns = patterns('',
     url(r'^accounts/logout', sviews.logout, name='logout'),
     url(r'^question/', sviews.question.as_view(), name='question'),
     url(r'^answer/$', sviews.answer.as_view(), name='answer'),
+    url(r'^progress/$', sviews.progress.as_view(), name='progress'),
 )
