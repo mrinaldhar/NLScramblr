@@ -7,9 +7,21 @@
 
 <link rel="stylesheet" href="{% static 'css/smooth.css' %}" />
 <link rel="stylesheet" href="{% static 'css/common.css' %}" />
+<style>
+#container-progressbar {
+width: 130px;
+height: 130px;
+text-align: center;
+position: fixed;
+top: 30px;
+left: 30px;
+}
+</style>
+
 </head>
 <body>
 <div class="header">Integrated Survey Platform</div>
+<div class="progressbars" id="container-progressbar"></div>
 
  <div id="container">
  	<h3>Click and drag the chunks such that the final sentence still makes sense</h3><br /><br />
@@ -23,6 +35,9 @@
 </ul><br /><br />
  <button onclick="submitthis()" id="submit" class="btn">Submit this solution!</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
  <button onclick="dataload()" id="next" class="btn">Next sentence</button>
+
+ <br />
+
 
 </div>
 <div id="footer">
@@ -40,12 +55,15 @@ Developed by Mrinal Dhar &amp; Chanakya Malireddy
 
 
 </body>
+<script src="{% static 'js/progressbar.js' %}"></script>
 <script src="{% static 'js/jquery.js' %}"></script>
 <script src="{% static 'js/jqueryui.js' %}"></script>
 <script src="{% static 'js/index.js' %}"></script>
 <script>
  var inputdata;
  var outputdata;
+   var progress = {};
+
    function dataload() {
    	$('#sortable').html('');
    	var surveyID = getUrlVars()["id"];
@@ -62,12 +80,22 @@ Developed by Mrinal Dhar &amp; Chanakya Malireddy
     	$('#sortable').append("<li id='"+i+"'>"+chunk+"</li>");
     }
     });
+    loadprogress();
+    progress["completed"] += 1;
+    circle.animate(progress["completed"]/progress["total"]);
    }
   $(document).ready(function() {
     $( "#sortable" ).sortable();
     $( "#sortable" ).disableSelection();
     dataload();
+    progress["completed"] -= 1;
   });
+
+  function loadprogress() {
+    var surveyID = getUrlVars()["id"];
+    progress = ajaxCall('/progress/', { survey: surveyID }, 'GET', false);
+    progress = progress["data"];
+  }
   function submitthis() {
   	var tempresult = {};
   	var elements = $('#sortable').children('li');
@@ -81,6 +109,7 @@ Developed by Mrinal Dhar &amp; Chanakya Malireddy
   	console.log(result);
   	data = {"question":inputdata["id"], "answer":JSON.stringify(result)};
   	var response = ajaxCall('/answer/', data, 'POST', false);
+
 
     if (response["data"] == "Success") {
   	 notify("Success!","Your response has been saved. Keep going!");
@@ -104,5 +133,22 @@ function notify(head_string, text) {
   triggerNotif();
   window.setTimeout(dismissNotif, 3000);
 }
+
+
+var circle = new ProgressBar.Circle('#container-progressbar', {
+    color: '#FFFFFF',
+    strokeWidth: 4,
+    trailWidth: 0.5,
+    duration: 500,
+    text: {
+        value: '0'
+    },
+    step: function(state, bar) {
+        bar.setText((bar.value() * 100).toFixed(0));
+        bar.setText(progress["completed"] + " / " + progress["total"])
+    }
+});
+
+
 </script>
 </html>
