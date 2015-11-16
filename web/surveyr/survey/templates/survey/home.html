@@ -81,20 +81,21 @@ Developed by Mrinal Dhar &amp; Chanakya Malireddy
     }
     });
     loadprogress();
-    progress["completed"] += 1;
-    circle.animate(progress["completed"]/progress["total"]);
    }
   $(document).ready(function() {
     $( "#sortable" ).sortable();
     $( "#sortable" ).disableSelection();
     dataload();
-    progress["completed"] -= 1;
   });
 
   function loadprogress() {
     var surveyID = getUrlVars()["id"];
     progress = ajaxCall('/progress/', { survey: surveyID }, 'GET', false);
     progress = progress["data"];
+    circle.animate(progress["completed"]/progress["total"]);
+    if (parseInt(progress["completed"]) == parseInt(progress["total"])) {
+      notify("All done!","You have completed this survey! Thank you!");
+    }
   }
   function submitthis() {
   	var tempresult = {};
