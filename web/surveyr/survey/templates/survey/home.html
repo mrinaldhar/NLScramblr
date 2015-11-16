@@ -68,7 +68,7 @@ Developed by Mrinal Dhar &amp; Chanakya Malireddy
    	$('#sortable').html('');
    	var surveyID = getUrlVars()["id"];
 	response = ajaxCall('/question', {survey: surveyID}, 'GET', false);
-	// console.log(response);
+	console.log(response);
 	inputdata = JSON.parse(response["data"]);
 	console.log(inputdata);
     $.each(inputdata, function(i) {
@@ -93,7 +93,7 @@ Developed by Mrinal Dhar &amp; Chanakya Malireddy
     progress = ajaxCall('/progress/', { survey: surveyID }, 'GET', false);
     progress = progress["data"];
     circle.animate(progress["completed"]/progress["total"]);
-    if (parseInt(progress["completed"]) == parseInt(progress["total"])) {
+    if (progress["completed"] == progress["total"]) {
       notify("All done!","You have completed this survey! Thank you!");
     }
   }
@@ -145,7 +145,7 @@ var circle = new ProgressBar.Circle('#container-progressbar', {
         value: '0'
     },
     step: function(state, bar) {
-        bar.setText((bar.value() * 100).toFixed(0));
+        // bar.setText((bar.value() * 100).toFixed(0));
         bar.setText(progress["completed"] + " / " + progress["total"])
     }
 });
