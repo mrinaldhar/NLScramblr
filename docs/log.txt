@@ -26,3 +26,11 @@ parser accuracy = 37.5% error
 2 Oct 2015
 
 Did a rewrite of the accuracy script. Now supports file/directory specification, and allows saving all datastructures to report file.
+
+==
+
+3 Oct 2015
+
+Wrote a script that calculates distance and sign of incorrectly parsed sentences. 
+
+==

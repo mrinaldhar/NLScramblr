@@ -1,0 +1,83 @@
+
+#formtable {
+	background-color: transparent;
+	width: 100%;
+	max-width: 100%;
+	border: 2px solid white;
+	border-radius: 5px;
+}
+form {
+	margin-top: 50px;
+	text-align: center;
+}
+input {
+	padding: 7px;
+	width: 80%;
+	font-size: 1em;
+	font-family: unity;
+	display: block;	
+	position: relative;
+	outline-width: 0px;
+	margin: 0 auto;
+	border-radius: 0px;
+	border: 0px;
+	box-shadow: 0 0 1px black;
+
+}
+input[type="submit"] {
+	padding: 10px;
+	padding-left: 20px;
+	padding-right: 20px;
+	border-radius: 5px;
+	font-size: 0.9em;
+	width: auto;
+	border: 2px solid white;
+	background-color: transparent;
+	color: white;
+	cursor: pointer;
+}
+input[type="submit"]:hover {
+	background-color: rgba(0,0,0,0.5);
+}
+input[type="text"] {
+	border-radius: 2px;
+}
+input[type="password"] {
+	border-radius: 2px;
+}
+button {
+	display: block;
+	padding: 15px;
+}
+.tab {
+	 padding-top: 20px;
+	 padding-bottom: 20px;
+	 background-color: transparent;
+	 font-size: 1.4em;
+	 color: rgba(255,255,255,0.7);
+	 border-collapse: collapse;
+}
+.selected {
+	color: black;
+	background-color: white;
+box-shadow: none;
+border-left: 1px solid rgba(0,0,0,0.1);
+}
+.tab:hover {
+	cursor: pointer;
+	}
+	#tabcontents {
+		padding-bottom: 50px;
+	}
+	#error {
+		padding-bottom: 10px;
+		color: red;
+	}
+		#container {
+	width: 40%;
+	position: relative;
+	margin: 0 auto;
+	margin-top: 170px;
+	/*height: 300px;*/
+	text-align: center;
+}

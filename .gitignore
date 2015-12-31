@@ -2,4 +2,6 @@
 data/old
 data/old/*
 .DS_Store
-venv/*
+web/venv/*
+web/surveyr/venv/*
+web/surveyr/surveyr/settings.py
